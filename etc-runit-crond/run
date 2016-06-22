@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# -n foreground
+# -s syslog
+exec /usr/sbin/crond -n -s
