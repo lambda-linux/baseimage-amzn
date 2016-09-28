@@ -77,11 +77,11 @@ We would like to give an overview of the version numbering convention that we fo
 
 Amazon Linux is a _rolling_ distribution. We can think of Amazon Linux as a single river of packages, and images themselves are just snapshots in time. When we run `yum update` our package set gets updated to the tip of this flow.
 
-Releases usually occur in March and September. Release version numbers have the form `20YY.MM`, where `YY` refers to the year, and `MM` refers to the month. For example `2016.03`.
+Releases usually occur in March and September. Release version numbers have the form `20YY.MM`, where `YY` refers to the year, and `MM` refers to the month. For example `2016.09`.
 
-Between major releases, point releases are made by Amazon Linux AMI Team. Point releases have the form `20YY.MM.X`, where `X` is the point release number. For example `2016.03.1`.
+Between major releases, point releases are made by Amazon Linux AMI Team. Point releases have the form `20YY.MM.X`, where `X` is the point release number. For example `2016.09.1`.
 
-baseimage-amzn uses version numbering of the form `20YY.MM-00X`, where `00X` is our point release. For example `2016.03-003`.
+baseimage-amzn uses version numbering of the form `20YY.MM-00X`, where `00X` is our point release. For example `2016.09-001`.
 
 We will see the form `20YY.MM-00X` used in the documentation below.
 
