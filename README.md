@@ -1,6 +1,6 @@
-# A minimal Docker Base Image based on Amazon Linux RPM Packages
+# A minimal Docker Base Image based on Amazon Linux Container Image
 
-baseimage-amzn is a [Docker](https://www.docker.com) [Base Image](https://docs.docker.com/v1.11/engine/reference/glossary/#base-image) that is configured for use within Docker containers. It is based on Amazon Linux RPM packages, plus:
+baseimage-amzn is a [Docker](https://www.docker.com) [Base Image](https://docs.docker.com/v1.11/engine/reference/glossary/#base-image) that is configured for use within Docker containers. It is based on [Amazon Linux Container Image](https://aws.amazon.com/blogs/aws/new-amazon-linux-container-image-for-cloud-and-on-premises-workloads/), plus:
 
  * Modifications for Docker-friendliness.
  * Administration tools that are useful in the context of Docker.
@@ -8,9 +8,11 @@ baseimage-amzn is a [Docker](https://www.docker.com) [Base Image](https://docs.d
 
 You can use it as a base for your own Docker images.
 
-From your Amazon Linux EC2 instance, you can download baseimage-amzn. Please see [https://lambda-linux.io/](https://lambda-linux.io/) for initial steps on how to get started. If you need additional help, please contact us on our [support](https://lambda-linux.io/support/) channels or open a GitHub [Issue](https://github.com/lambda-linux/baseimage-amzn/issues).
+baseimage-amzn is available for pulling from [the docker registry!](https://hub.docker.com/r/lambdalinux/baseimage-amzn/)
 
-baseimage-amzn is inspired by [baseimage-docker](https://github.com/phusion/baseimage-docker) project. We would like to say thank you to Phusion for providing some good ideas and code. We would also like to say thank you to [Amazon Linux AMI Team](https://aws.amazon.com/amazon-linux-ami/) for providing excellent Amazon Linux RPM packages.
+If you need additional help, please contact us on our [support](https://lambda-linux.io/support/) channels or open a GitHub [Issue](https://github.com/lambda-linux/baseimage-amzn/issues).
+
+baseimage-amzn is inspired by [baseimage-docker](https://github.com/phusion/baseimage-docker) project. We would like to say thank you to Phusion for providing some good ideas and code. We would also like to say thank you to [Amazon Linux Team](https://aws.amazon.com/amazon-linux-ami/) for providing excellent Amazon Linux Container Image.
 
 -----------------------------------------
 
@@ -30,8 +32,7 @@ baseimage-amzn is inspired by [baseimage-docker](https://github.com/phusion/base
     * [baseimage-amzn Version Numbering](#version_numbering)
     * [Inspecting baseimage-amzn](#inspecting)
   * [Using baseimage-amzn as Docker Base Image](#using)
-    * [Working with EC2 Container Registry (ECR)](#working_with_ecr)
-    * [Adding baseimage-amzn to our `Dockerfile`](#adding_to_dockerfile)
+    * [Getting started](#getting_started)
     * [Building and running our Docker Image](#building_and_running)
     * [Adding additional daemons](#adding_additional_daemons)
     * [Running scripts during container startup](#running_startup_scripts)
@@ -54,7 +55,7 @@ baseimage-amzn is inspired by [baseimage-docker](https://github.com/phusion/base
 
 | Component        | Why is it included? / Remarks |
 | ---------------- | ------------------- |
-| Amazon Linux RPM packages | The base system. |
+| Amazon Linux | The base system. |
 | A init process | baseimage-amzn comes with an init process. Available as `/sbin/my_init`. |
 | rsyslog | Syslog daemon is used by various services and applications to log to `/var/log/*` files. |
 | logrotate | Rotates and compresses logs files on a regular basis. |
@@ -79,65 +80,49 @@ Amazon Linux is a _rolling_ distribution. We can think of Amazon Linux as a sing
 
 Releases usually occur in March and September. Release version numbers have the form `20YY.MM`, where `YY` refers to the year, and `MM` refers to the month. For example `2016.09`.
 
-Between major releases, point releases are made by Amazon Linux AMI Team. Point releases have the form `20YY.MM.X`, where `X` is the point release number. For example `2016.09.1`.
+Between major releases, point releases are made by Amazon Linux Team. Point releases have the form `20YY.MM.X`, where `X` is the point release number. For example `2016.09.0`.
 
-baseimage-amzn uses version numbering of the form `20YY.MM-00X`, where `00X` is our point release. For example `2016.09-001`.
+baseimage-amzn uses version numbering of the form `20YY.MM-00X`, where `00X` is our point release. For example `2016.09-000`.
 
-We will see the form `20YY.MM-00X` used in the documentation below.
+We will see the form `20YY.MM-00X` used in the documentation below. You can find the list of baseimage-amzn versions [here](https://hub.docker.com/r/lambdalinux/baseimage-amzn/tags/)
 
 <a name="inspecting"></a>
 ## Inspecting baseimage-amzn
 
-Download baseimage-amzn. You can find the steps outlined at [https://lambda-linux.io/](https://lambda-linux.io).
-
 To look around the image as `root` user, run:
 
-    docker run --rm -t -i baseimage-amzn:<20YY.MM-00X> /sbin/my_init -- /bin/bash -l
+    docker run --rm -t -i lambdalinux/baseimage-amzn:2016.09-000 /sbin/my_init -- /bin/bash -l
+
+    docker run --rm -t -i lambdalinux/baseimage-amzn:<20YY.MM-00X> /sbin/my_init -- /bin/bash -l
 
 To look around the image as `ll-user` user, run:
 
-    docker run --rm -t -i baseimage-amzn:<20YY.MM-00X> /sbin/my_init -- /sbin/setuser ll-user /bin/bash -l
+    docker run --rm -t -i lambdalinux/baseimage-amzn:2016.09-000 /sbin/my_init -- /sbin/setuser ll-user /bin/bash -l
+
+    docker run --rm -t -i lambdalinux/baseimage-amzn:<20YY.MM-00X> /sbin/my_init -- /sbin/setuser ll-user /bin/bash -l
 
 Here `<20YY.MM-00X>` is baseimage-amzn [version number](#version_numbering).
+
+You don't have to download anything manually. The above command will automatically pull baseimage-amzn image from the Docker registry.
 
 <a name="using"></a>
 ## Using baseimage-amzn as Docker Base Image
 
-<a name="working_with_ecr"></a>
-### Working with EC2 Container Registry (ECR)
+<a name="getting_started">
+### Getting started
 
-A Docker based workflow usually involves a private container registry. In our documentation we will be using AWS [EC2 Container Registry (ECR)](https://aws.amazon.com/ecr/) as our private Docker registry.
+The image is called `lambdalinux/baseimage-amzn` and is available on the Docker registry.
 
-We need to first [`docker import`](https://docs.docker.com/v1.11/engine/reference/commandline/import/) the image based on the steps outlined at [https://lambda-linux.io](https://lambda-linux.io/).
-
-Once the image is available locally, we can push it to our private Docker registry. We can then [`docker pull`](https://docs.docker.com/v1.11/engine/reference/commandline/pull/) the image as required.
-
-Create a private ECR Docker repository named `baseimage-amzn`.
-
-    aws ecr create-repository --repository-name baseimage-amzn --region us-west-2
-
-[`docker tag`](https://docs.docker.com/v1.11/engine/reference/commandline/tag/) and [`docker push`](https://docs.docker.com/v1.11/engine/reference/commandline/push/) to `baseimage-amzn` private ECR Docker repository.
-
-    $(aws ecr get-login --region us-west-2)
-
-    docker tag baseimage-amzn:<20YY.MM-00X> 111122223333.dkr.ecr.us-west-2.amazonaws.com/baseimage-amzn:<20YY.MM-00X>
-
-    docker push 111122223333.dkr.ecr.us-west-2.amazonaws.com/baseimage-amzn:<20YY.MM-00X>
-
-Here `<20YY.MM-00X>` is baseimage-amzn [version number](#version_numbering) and `111122223333` is AWS Account ID. We are using ECR service hosted in `us-west-2` region.
-
-<a name="adding_to_dockerfile">
-### Adding baseimage-amzn to our `Dockerfile`
-
-When baseimage-amzn image is stored locally we can directly refer to it in the [`FROM`](https://docs.docker.com/v1.11/engine/reference/builder/#from) instruction in our `Dockerfile`.
-
-    FROM baseimage-amzn:<20YY.MM-00X>
+    # Use lambdalinux/baseimage-amzn as base image.
+    # See https://hub.docker.com/r/lambdalinux/baseimage-amzn/tags/ for
+    # a list of version numbers.
+    FROM lambdalinux/baseimage-amzn:<20YY.MM-00X>
 
     # Use baseimage-amzn's init system
     CMD ["/sbin/my_init"]
 
     RUN \
-      # Update baseimage-amzn RPM packages
+      # Update RPM packages
       yum update && \
 
       # ...put your own build instructions here...
@@ -147,27 +132,6 @@ When baseimage-amzn image is stored locally we can directly refer to it in the [
       rm -rf /var/cache/yum/* && \
       rm -rf /tmp/* && \
       rm -rf /var/tmp/*
-
-When baseimage-amzn image is on a private ECR repository, we will need to specify the repository URI in the [`FROM`](https://docs.docker.com/v1.11/engine/reference/builder/#from) instruction.
-
-    FROM 111122223333.dkr.ecr.us-west-2.amazonaws.com/baseimage-amzn:<20YY.MM-00X>
-
-    # Use baseimage-amzn's init system
-    CMD ["/sbin/my_init"]
-
-    RUN \
-      # Update baseimage-amzn RPM packages
-      yum update && \
-
-      # ...put your own build instructions here...
-
-      # Clean up YUM when done
-      yum clean all && \
-      rm -rf /var/cache/yum/* && \
-      rm -rf /tmp/* && \
-      rm -rf /var/tmp/*
-
-Here `<20YY.MM-00X>` is baseimage-amzn [version number](#version_numbering) and `111122223333` is Account ID. We are using ECR service hosted in `us-west-2` region.
 
 <a name="building_and_running">
 ### Building and running our Docker Image
@@ -247,9 +211,9 @@ When we use `/sbin/my_init` as our main container command, any environment varia
 
 Following example shows this in action.
 
-    [ec2-user@ip-10-0-0-161 ~]$ docker run --rm -t -i \
+    $ docker run --rm -t -i \
       --env FOO=bar --env HELLO='my beautiful world' \
-      baseimage-amzn:<20YY.MM-00X> /sbin/my_init -- /bin/bash -l
+      lambdalinux/baseimage-amzn:<20YY.MM-00X> /sbin/my_init -- /bin/bash -l
 
     [...]
 
@@ -275,7 +239,7 @@ For example, here is how we can define an environment variable in our `Dockerfil
 
 We can verify that it works, as follows:
 
-    [ec2-user@ip-10-0-0-161 ~]$ docker run --rm -t -i \
+    $ docker run --rm -t -i \
       <DOCKER_IMAGE> /sbin/my_init -- /bin/bash -l
 
     [...]
@@ -299,9 +263,9 @@ Multiple formats makes it easy to query the original environment variables from 
 
 Here is an example showing how this works.
 
-    [ec2-user@ip-10-0-0-161 ~]$ docker run --rm -t -i \
+    $ docker run --rm -t -i \
       --env FOO=bar --env HELLO='my beautiful world' \
-      baseimage-amzn:<20YY.MM-00X> /sbin/my_init -- /bin/bash -l
+      lambdalinux/baseimage-amzn:<20YY.MM-00X> /sbin/my_init -- /bin/bash -l
 
     [...]
 
@@ -363,7 +327,7 @@ This command does the following.
 
 For example:
 
-    [ec2-user@ip-10-0-0-161 ~]$ docker run baseimage-amzn:<20YY.MM-00X> /sbin/my_init -- /bin/ls
+    $ docker run lambdalinux/baseimage-amzn:<20YY.MM-00X> /sbin/my_init -- /bin/ls
     *** Running /etc/rc.local...
     *** Booting runit daemon...
     *** Runit started as PID 7
@@ -383,7 +347,7 @@ We can customize how `/sbin/my_init` is invoked. Run `docker run <DOCKER_IMAGE> 
 
 The following example runs `/bin/ls` without running the startup files, in quite mode, while running all runit services.
 
-    [ec2-user@ip-10-0-0-161 ~]$ docker run baseimage-amzn:<20YY.MM-00X> \
+    $ docker run lambdalinux/baseimage-amzn:<20YY.MM-00X> \
       /sbin/my_init --skip-startup-files --quiet -- /bin/ls
     bin
     boot
