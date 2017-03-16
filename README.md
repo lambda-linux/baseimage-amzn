@@ -71,7 +71,7 @@ We do not ship SSH server in our image. For most users we recommend using [`dock
 
 While it is certainly possible to run SSH server within baseimage-amzn, securing SSH correctly in an operational setting is _non-trivial_. If your use-case _really_ requires running SSH server within baseimage-amzn, please [contact us](https://lambda-linux.io/support/) and we will find a good way to help you.
 
-<a name="version_numbering">
+<a name="version_numbering"></a>
 ### baseimage-amzn Version Numbering
 
 We would like to give an overview of the version numbering convention that we follow and how that relates to Amazon Linux releases.
@@ -108,7 +108,7 @@ You don't have to download anything manually. The above command will automatical
 <a name="using"></a>
 ## Using baseimage-amzn as Docker Base Image
 
-<a name="getting_started">
+<a name="getting_started"></a>
 ### Getting started
 
 The image is called `lambdalinux/baseimage-amzn` and is available on the Docker registry.
@@ -133,7 +133,7 @@ The image is called `lambdalinux/baseimage-amzn` and is available on the Docker 
       rm -rf /tmp/* && \
       rm -rf /var/tmp/*
 
-<a name="building_and_running">
+<a name="building_and_running"></a>
 ### Building and running our Docker Image
 
 We use [`docker build`](https://docs.docker.com/v1.11/engine/reference/commandline/build/) command to build our Docker Image.
@@ -154,7 +154,7 @@ Execute `pstree` command in the container.
 
     docker exec <CONTAINER_NAME> /usr/bin/pstree
 
-    my_init---runsvdir-+-runsv---rsyslogd---2*[{rsyslogd}]
+    my_init---runsvdir-|-runsv---rsyslogd---2*[{rsyslogd}]
                        `-runsv---crond`
 
 We can stop the running Docker container with [`docker stop`](https://docs.docker.com/v1.11/engine/reference/commandline/stop/) command.
@@ -182,7 +182,7 @@ In `Dockerfile`:
 
 Note that the daemon being executed by the `run` shell script **must not put itself into the background and must run in the foreground**. Daemons usually have a command line flag or a config file option for running in foreground mode.
 
-<a name="running_startup_scripts">
+<a name="running_startup_scripts"></a>
 ### Running scripts during container startup
 
 The baseimage-amzn init system, `/sbin/my_init`, can run scripts during startup. They are run in the following order if they exist.
