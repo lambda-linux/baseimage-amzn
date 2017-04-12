@@ -82,7 +82,7 @@ Releases usually occur in March and September. Release version numbers have the 
 
 Between major releases, point releases are made by Amazon Linux Team. Point releases have the form `20YY.MM.X`, where `X` is the point release number. For example `2016.09.0`.
 
-baseimage-amzn uses version numbering of the form `20YY.MM-00X`, where `00X` is our point release. For example `2016.09-001`.
+baseimage-amzn uses version numbering of the form `20YY.MM-00X`, where `00X` is our point release. For example `2017.03-000`.
 
 We will see the form `20YY.MM-00X` used in the documentation below. You can find the list of baseimage-amzn versions [here](https://hub.docker.com/r/lambdalinux/baseimage-amzn/tags/)
 
@@ -91,13 +91,13 @@ We will see the form `20YY.MM-00X` used in the documentation below. You can find
 
 To look around the image as `root` user, run:
 
-    docker run --rm -t -i lambdalinux/baseimage-amzn:2016.09-001 /sbin/my_init -- /bin/bash -l
+    docker run --rm -t -i lambdalinux/baseimage-amzn:2017.03-000 /sbin/my_init -- /bin/bash -l
 
     docker run --rm -t -i lambdalinux/baseimage-amzn:<20YY.MM-00X> /sbin/my_init -- /bin/bash -l
 
 To look around the image as `ll-user` user, run:
 
-    docker run --rm -t -i lambdalinux/baseimage-amzn:2016.09-001 /sbin/my_init -- /sbin/setuser ll-user /bin/bash -l
+    docker run --rm -t -i lambdalinux/baseimage-amzn:2017.03-000 /sbin/my_init -- /sbin/setuser ll-user /bin/bash -l
 
     docker run --rm -t -i lambdalinux/baseimage-amzn:<20YY.MM-00X> /sbin/my_init -- /sbin/setuser ll-user /bin/bash -l
 
